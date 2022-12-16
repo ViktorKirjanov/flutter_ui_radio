@@ -22,6 +22,9 @@ void main() {
               id: 'ps.106614797',
               href: 'https://api.napster.com/v2.2/stations/ps.106614797',
               name: 'EDM Central',
+              description:
+                  'Electro-house, trance, dubstep and more\nThe biggest tunes from the biggest festivals\nTracks for rocking the big tent\nClub peaktime comes to your living room\nEDM nonstop',
+              summary: 'The hottest in EDM and crossover dance music.',
               artists: 'Avicii, Swedish House Mafia, Deadmau5',
               links: Links(
                 mediumImage: Link(
@@ -44,6 +47,9 @@ void main() {
               id: 'ps.106614797',
               href: 'https://api.napster.com/v2.2/stations/ps.106614797',
               name: 'EDM Central',
+              description:
+                  'Electro-house, trance, dubstep and more\nThe biggest tunes from the biggest festivals\nTracks for rocking the big tent\nClub peaktime comes to your living room\nEDM nonstop',
+              summary: 'The hottest in EDM and crossover dance music.',
               artists: 'Avicii, Swedish House Mafia, Deadmau5',
               links: Links(
                 mediumImage: Link(

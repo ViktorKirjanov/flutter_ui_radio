@@ -9,3 +9,7 @@ class Pagination {
   static const limit = 25;
   static const timeout = Duration(milliseconds: 500);
 }
+
+class Animations {
+  static const audioWaves = 3;
+}

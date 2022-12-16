@@ -4,6 +4,7 @@ import 'package:flutter_ui_radio/blocs/stations_bloc/stations_bloc.dart';
 import 'package:flutter_ui_radio/config/custom_theme.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
 import 'package:flutter_ui_radio/networking/repository/station_repository.dart';
+import 'package:flutter_ui_radio/pages/station_page/station_page.dart';
 
 class StationsPage extends StatelessWidget {
   const StationsPage({super.key});
@@ -71,15 +72,25 @@ class __StationsViewState extends State<_StationsView> {
                   } else {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        color: Colors.grey.shade800,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(index.toString()),
-                            Text(_stations[index].name),
-                          ],
+                      child: GestureDetector(
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          color: Colors.grey.shade800,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(index.toString()),
+                              Text(_stations[index].name),
+                            ],
+                          ),
+                        ),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => StationPage(
+                              station: _stations[index],
+                            ),
+                          ),
                         ),
                       ),
                     );

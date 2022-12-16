@@ -10,6 +10,8 @@ Station _$StationFromJson(Map<String, dynamic> json) => Station(
       id: json['id'] as String,
       href: json['href'] as String,
       name: json['name'] as String,
+      description: json['description'] as String,
+      summary: json['summary'] as String,
       artists: json['artists'] as String,
       links: Links.fromJson(json['links'] as Map<String, dynamic>),
     );

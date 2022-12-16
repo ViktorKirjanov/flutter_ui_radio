@@ -5,7 +5,6 @@ import 'package:flutter_ui_radio/config/consts.dart';
 import 'package:flutter_ui_radio/core/exceptions/exceptions.dart';
 import 'package:flutter_ui_radio/core/exceptions/network_exceptions.dart';
 import 'package:flutter_ui_radio/models/links_model.dart';
-import 'package:flutter_ui_radio/models/meta_model.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
 import 'package:flutter_ui_radio/models/stations_response_model.dart';
 import 'package:flutter_ui_radio/networking/client/client.dart';
@@ -43,6 +42,9 @@ void main() {
           id: 'ps.106614797',
           href: 'https://api.napster.com/v2.2/stations/ps.106614797',
           name: 'EDM Central',
+          description:
+              'Electro-house, trance, dubstep and more\nThe biggest tunes from the biggest festivals\nTracks for rocking the big tent\nClub peaktime comes to your living room\nEDM nonstop',
+          summary: 'The hottest in EDM and crossover dance music.',
           artists: 'Avicii, Swedish House Mafia, Deadmau5',
           links: Links(
             mediumImage: Link(
@@ -56,10 +58,6 @@ void main() {
           ),
         ),
       ],
-      meta: Meta(
-        totalCount: 1,
-        returnedCount: 1,
-      ),
     );
 
     test(

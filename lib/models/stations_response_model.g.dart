@@ -11,5 +11,4 @@ StationsResponse _$StationsResponseFromJson(Map<String, dynamic> json) =>
       stations: (json['stations'] as List<dynamic>)
           .map((e) => Station.fromJson(e as Map<String, dynamic>))
           .toList(),
-      meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
     );
