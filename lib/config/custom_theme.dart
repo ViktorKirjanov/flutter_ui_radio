@@ -22,7 +22,7 @@ class CustomTheme {
       foregroundColor: grey,
       titleTextStyle: TextStyle(
         fontWeight: FontWeight.w500,
-        fontSize: 32.0,
+        fontSize: 16.0,
       ),
       iconTheme: IconThemeData(
         color: grey,

@@ -10,6 +10,8 @@ class Station extends Equatable {
     required this.id,
     required this.href,
     required this.name,
+    required this.description,
+    required this.summary,
     required this.artists,
     required this.links,
   });
@@ -20,6 +22,8 @@ class Station extends Equatable {
   final String id;
   final String href;
   final String name;
+  final String description;
+  final String summary;
   final String artists;
   final Links links;
 
@@ -28,6 +32,8 @@ class Station extends Equatable {
         id,
         href,
         name,
+        description,
+        summary,
         artists,
         links,
       ];
