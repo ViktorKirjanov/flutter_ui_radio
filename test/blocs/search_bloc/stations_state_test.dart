@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_ui_radio/blocs/stations_bloc/stations_bloc.dart';
 import 'package:flutter_ui_radio/models/links_model.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
+import 'package:flutter_ui_radio/models/stations_response_model.dart';
 
 void main() {
   group('SearchState', () {
@@ -38,6 +39,10 @@ void main() {
               ),
             ),
           ],
+          Meta(
+            totalCount: 1,
+            returnedCount: 1,
+          ),
           false,
         ),
         const SuccessStationsState(
@@ -63,6 +68,10 @@ void main() {
               ),
             ),
           ],
+          Meta(
+            totalCount: 1,
+            returnedCount: 1,
+          ),
           false,
         ),
       );

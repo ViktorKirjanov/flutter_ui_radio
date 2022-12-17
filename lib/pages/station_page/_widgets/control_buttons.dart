@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ui_radio/blocs/cubit/on_off_cubit.dart';
+import 'package:flutter_ui_radio/config/custom_theme.dart';
 
 class ControlButtons extends StatelessWidget {
   const ControlButtons({super.key});
@@ -32,9 +33,9 @@ class ControlButtons extends StatelessWidget {
           Container(
             width: 75,
             height: 75,
-            decoration: ShapeDecoration(
-              shape: const StadiumBorder(),
-              color: Colors.purple.shade300,
+            decoration: const ShapeDecoration(
+              shape: StadiumBorder(),
+              color: CustomTheme.mainColor,
             ),
             child: BlocBuilder<OnOffCubit, bool>(
               builder: (_, state) => MaterialButton(

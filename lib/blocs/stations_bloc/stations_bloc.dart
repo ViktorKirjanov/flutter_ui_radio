@@ -4,6 +4,7 @@ import 'package:flutter_ui_radio/config/consts.dart';
 import 'package:flutter_ui_radio/core/exceptions/exceptions.dart';
 import 'package:flutter_ui_radio/core/exceptions/network_exceptions.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
+import 'package:flutter_ui_radio/models/stations_response_model.dart';
 import 'package:flutter_ui_radio/networking/repository/station_repository.dart';
 
 part 'stations_event.dart';
@@ -53,11 +54,12 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
       (failure) => emit(
         ErrorStationsState(message: _mapFailureToMessage(failure)),
       ),
-      (searchResponse) => emit(
+      (stationsResponse) => emit(
         SuccessStationsState(
           page,
-          searchResponse.stations,
-          searchResponse.stations.length == Pagination.limit,
+          stationsResponse.stations,
+          stationsResponse.meta,
+          stationsResponse.stations.length == Pagination.limit,
         ),
       ),
     );

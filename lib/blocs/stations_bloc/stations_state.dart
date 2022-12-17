@@ -15,16 +15,20 @@ class SuccessStationsState extends StationsState {
   const SuccessStationsState(
     this.page,
     this.stations,
+    this.meta,
     this.hasMorePages,
   );
 
   final int page;
   final List<Station> stations;
+  final Meta meta;
   final bool hasMorePages;
 
   @override
   List<Object> get props => [
+        page,
         stations,
+        meta,
         hasMorePages,
       ];
 

@@ -58,6 +58,10 @@ void main() {
           ),
         ),
       ],
+      meta: Meta(
+        totalCount: 1,
+        returnedCount: 1,
+      ),
     );
 
     test(

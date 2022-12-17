@@ -55,10 +55,10 @@ void main() {
 
   const stationsResponse = StationsResponse(
     stations: stations,
-    // meta: Meta(
-    //   totalCount: 1,
-    //   returnedCount: 1,
-    // ),
+    meta: Meta(
+      totalCount: 1,
+      returnedCount: 1,
+    ),
   );
 
   void setUpMockGetStationsExeption() =>
@@ -93,7 +93,12 @@ void main() {
       act: (StationsBloc bloc) async => bloc.add(const FirstStationsEvent()),
       expect: () => [
         LoadingStationsState(),
-        const SuccessStationsState(1, stations, false),
+        const SuccessStationsState(
+          0,
+          stations,
+          Meta(totalCount: 1, returnedCount: 1),
+          false,
+        ),
       ],
       verify: (_) => verify(
         () => mockStationRepository.getStations(any(), any()),
@@ -106,7 +111,12 @@ void main() {
       'should emit [Error] when api thow an error',
       setUp: setUpMockGetStationsExeption,
       build: buildBloc,
-      seed: () => const SuccessStationsState(1, stations, false),
+      seed: () => const SuccessStationsState(
+        1,
+        stations,
+        Meta(totalCount: 1, returnedCount: 1),
+        false,
+      ),
       act: (StationsBloc bloc) async => bloc.add(const NextStationsEvent()),
       expect: () => [
         const ErrorStationsState(message: 'Request Cancelled'),
@@ -120,9 +130,21 @@ void main() {
       'should emit [Success] when data is gotten successfully',
       setUp: setUpMockGetStationsSuccess,
       build: buildBloc,
-      seed: () => const SuccessStationsState(1, stations, true),
+      seed: () => const SuccessStationsState(
+        1,
+        stations,
+        Meta(totalCount: 1, returnedCount: 1),
+        true,
+      ),
       act: (StationsBloc bloc) async => bloc.add(const NextStationsEvent()),
-      expect: () => [const SuccessStationsState(2, stations, false)],
+      expect: () => [
+        const SuccessStationsState(
+          2,
+          stations,
+          Meta(totalCount: 1, returnedCount: 1),
+          false,
+        )
+      ],
       verify: (_) => verify(
         () => mockStationRepository.getStations(any(), any()),
       ).called(1),

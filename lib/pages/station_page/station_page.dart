@@ -15,10 +15,7 @@ class StationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(station.name),
-          backgroundColor: Colors.transparent,
-        ),
+        appBar: AppBar(title: Text(station.name)),
         extendBodyBehindAppBar: true,
         body: Stack(
           fit: StackFit.expand,

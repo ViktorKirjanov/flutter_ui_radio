@@ -9,33 +9,25 @@ class BlurBG extends StatelessWidget {
   final Link? link;
 
   @override
-  Widget build(BuildContext context) => ClipRRect(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            image: link != null
-                ? DecorationImage(
-                    image: NetworkImage(link!.href),
-                    fit: BoxFit.cover,
-                  )
-                : null,
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.purple,
-                Colors.blue,
-              ],
+  Widget build(BuildContext context) => link != null
+      ? ClipRRect(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(link!.href),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 50.0,
+                sigmaY: 50.0,
+              ),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
             ),
           ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 50.0,
-              sigmaY: 50.0,
-            ),
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
-            ),
-          ),
-        ),
-      );
+        )
+      : Container();
 }
