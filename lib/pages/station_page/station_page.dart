@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ui_radio/blocs/cubit/on_off_cubit.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
+import 'package:flutter_ui_radio/pages/_widgets/main_size_box.dart';
 import 'package:flutter_ui_radio/pages/station_page/_widgets/blur_bg.dart';
 import 'package:flutter_ui_radio/pages/station_page/_widgets/control_buttons.dart';
 import 'package:flutter_ui_radio/pages/station_page/_widgets/now_playing.dart';
@@ -30,9 +31,9 @@ class StationPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       StationImageAnimation(link: station.links.largeImage),
-                      const SizedBox(height: 16.0),
+                      const MainSizeBox(),
                       const NowPlaying(),
-                      const SizedBox(height: 16.0),
+                      const MainSizeBox(),
                       const PlayingNow(),
                       const Spacer(flex: 1),
                       const ControlButtons(),

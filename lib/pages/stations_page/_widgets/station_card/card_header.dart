@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_radio/config/custom_theme.dart';
 import 'package:flutter_ui_radio/pages/stations_page/_widgets/station_card/sound_indicator.dart';
 
 class CardHeader extends StatelessWidget {
@@ -20,7 +21,8 @@ class CardHeader extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10.0),
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding:
+              const EdgeInsets.symmetric(horizontal: CustomTheme.mainSpacing),
           child: Row(
             children: [
               if (index % 3 == 0)
@@ -39,9 +41,7 @@ class CardHeader extends StatelessWidget {
               ),
               Text(
                 '${index + 1}/$total',
-                style: const TextStyle(
-                  fontSize: 10.0,
-                ),
+                style: CustomTheme.tiny,
               ),
             ],
           ),

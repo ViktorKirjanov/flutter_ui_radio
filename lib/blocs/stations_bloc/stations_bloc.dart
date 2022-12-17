@@ -4,7 +4,6 @@ import 'package:flutter_ui_radio/config/consts.dart';
 import 'package:flutter_ui_radio/core/exceptions/exceptions.dart';
 import 'package:flutter_ui_radio/core/exceptions/network_exceptions.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
-import 'package:flutter_ui_radio/models/stations_response_model.dart';
 import 'package:flutter_ui_radio/networking/repository/station_repository.dart';
 
 part 'stations_event.dart';
@@ -13,7 +12,7 @@ part 'stations_state.dart';
 class StationsBloc extends Bloc<StationsEvent, StationsState> {
   StationsBloc({required StationRepository stationRepository})
       : _stationRepository = stationRepository,
-        super(InitialStationsState()) {
+        super(StationsState.pure()) {
     on<FirstStationsEvent>(_onFirstStationsEvent);
     on<NextStationsEvent>(_onGetNextStationsEvent);
   }
@@ -24,21 +23,24 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
     FirstStationsEvent event,
     Emitter<StationsState> emit,
   ) async {
-    emit(LoadingStationsState());
-    await _emitStation(emit, 0, Pagination.limit, 0);
+    await _emitStation(emit, 0, StationList.limit, 0);
   }
 
   Future<void> _onGetNextStationsEvent(
     NextStationsEvent _,
     Emitter<StationsState> emit,
   ) async {
-    if (state is SuccessStationsState) {
-      final currentState = state as SuccessStationsState;
-      final currentPage = currentState.page + 1;
-      final offset = currentPage * Pagination.limit;
-      await _emitStation(emit, currentPage, Pagination.limit, offset);
+    if (state.stations.isNotEmpty) {
+      final currentPage = state.page + 1;
+      final offset = currentPage * StationList.limit;
+      await _emitStation(emit, currentPage, StationList.limit, offset);
     } else {
-      emit(const ErrorStationsState(message: 'Ooops, something went wrong'));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Ooops, something went wrong',
+        ),
+      );
     }
   }
 
@@ -48,21 +50,29 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
     int limit,
     int offset,
   ) async {
+    emit(state.copyWith(isLoading: true, error: null));
     final failureOrStations =
         await _stationRepository.getStations(limit, offset);
     failureOrStations.fold(
-      (failure) => emit(
-        ErrorStationsState(message: _mapFailureToMessage(failure)),
-      ),
-      (stationsResponse) => emit(
-        SuccessStationsState(
-          page,
-          stationsResponse.stations,
-          stationsResponse.meta,
-          stationsResponse.stations.length == Pagination.limit,
+        (failure) => emit(
+              state.copyWith(
+                isLoading: false,
+                error: _mapFailureToMessage(failure),
+              ),
+            ), (stationsResponse) {
+      final stations = [...state.stations, ...stationsResponse.stations];
+
+      emit(
+        state.copyWith(
+          page: state.page + 1,
+          stations: stations,
+          total: stationsResponse.meta.totalCount,
+          hasMorePages: stations.length != stationsResponse.meta.totalCount,
+          isLoading: false,
+          error: null,
         ),
-      ),
-    );
+      );
+    });
   }
 
   String _mapFailureToMessage(Failure failure) {

@@ -1,47 +1,59 @@
 part of 'stations_bloc.dart';
 
-abstract class StationsState extends Equatable {
-  const StationsState();
+class StationsState extends Equatable {
+  const StationsState({
+    required this.page,
+    required this.stations,
+    required this.total,
+    required this.hasMorePages,
+    required this.isLoading,
+    required this.error,
+  });
 
-  @override
-  List<Object> get props => [];
-}
-
-class InitialStationsState extends StationsState {}
-
-class LoadingStationsState extends StationsState {}
-
-class SuccessStationsState extends StationsState {
-  const SuccessStationsState(
-    this.page,
-    this.stations,
-    this.meta,
-    this.hasMorePages,
-  );
+  factory StationsState.pure() => const StationsState(
+        page: 0,
+        stations: [],
+        total: 0,
+        hasMorePages: true,
+        isLoading: false,
+        error: null,
+      );
 
   final int page;
   final List<Station> stations;
-  final Meta meta;
+  final int total;
   final bool hasMorePages;
+  final bool isLoading;
+  final String? error;
 
-  @override
-  List<Object> get props => [
-        page,
-        stations,
-        meta,
-        hasMorePages,
-      ];
+  StationsState copyWith({
+    int? page,
+    List<Station>? stations,
+    int? total,
+    bool? hasMorePages,
+    bool? isLoading,
+    String? error,
+  }) =>
+      StationsState(
+        page: page ?? this.page,
+        stations: stations ?? this.stations,
+        total: total ?? this.total,
+        hasMorePages: hasMorePages ?? this.hasMorePages,
+        isLoading: isLoading ?? this.isLoading,
+        error: error ?? this.error,
+      );
 
   @override
   String toString() =>
-      'page: $page length: ${stations.length} hasMorePages: $hasMorePages';
-}
-
-class ErrorStationsState extends StationsState {
-  const ErrorStationsState({required this.message});
-
-  final String message;
+      'page: $page length: ${stations.length} more: $hasMorePages, total: $total, isLoading: $isLoading, error: $error';
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [
+        page,
+        stations,
+        total,
+        hasMorePages,
+        isLoading,
+        error,
+      ];
 }

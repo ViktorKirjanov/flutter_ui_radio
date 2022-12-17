@@ -8,10 +8,15 @@ class CustomTheme {
   static const Color mainColor = Color.fromRGBO(255, 115, 96, 1);
   static const Color secondaryColor = Color.fromRGBO(19, 24, 40, 1);
 
-  static const borderRadius = BorderRadius.all(Radius.circular(12.0));
+  static const mainSpacing = 16.0;
+
+  static const bigBorderRadius = BorderRadius.all(Radius.circular(20.0));
+  static const borderRadius = BorderRadius.all(Radius.circular(mainSpacing));
+  static const smallBorderRadius = BorderRadius.all(Radius.circular(8.0));
 
   static final darkTheme = ThemeData(
     scaffoldBackgroundColor: darkBlue,
+    progressIndicatorTheme: const ProgressIndicatorThemeData(color: mainColor),
     textTheme: const TextTheme(
       bodyText1: TextStyle(),
       bodyText2: TextStyle(),
@@ -19,14 +24,11 @@ class CustomTheme {
     ).apply(
       bodyColor: grey,
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       foregroundColor: grey,
-      titleTextStyle: TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: 16.0,
-      ),
-      iconTheme: IconThemeData(
+      titleTextStyle: header2,
+      iconTheme: const IconThemeData(
         color: grey,
       ),
       elevation: .0,
@@ -43,5 +45,25 @@ class CustomTheme {
     spreadRadius: .5,
     blurRadius: 1,
     offset: const Offset(0, 1),
+  );
+
+  static TextStyle header1 = const TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle header2 = const TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle small = const TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 12.0,
+  );
+
+  static TextStyle tiny = const TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 10.0,
   );
 }

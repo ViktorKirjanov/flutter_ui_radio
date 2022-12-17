@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_radio/config/custom_theme.dart';
 import 'package:flutter_ui_radio/models/links_model.dart';
 
 class CardImage extends StatelessWidget {
@@ -13,9 +14,7 @@ class CardImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClipRRect(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(16.0),
-        ),
+        borderRadius: CustomTheme.borderRadius,
         child: Stack(
           children: [
             SizedBox.expand(

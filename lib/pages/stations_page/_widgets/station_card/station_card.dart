@@ -21,9 +21,7 @@ class StationCard extends StatelessWidget {
   Widget build(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(
           color: CustomTheme.mainColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20.0),
-          ),
+          borderRadius: CustomTheme.bigBorderRadius,
           boxShadow: [CustomTheme.shadow],
         ),
         child: Column(
@@ -48,18 +46,14 @@ class StationCard extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(CustomTheme.mainSpacing),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             station.artists,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
-                              color: CustomTheme.grey,
-                            ),
+                            style: CustomTheme.small,
                           ),
                           const Center(
                             child: Icon(
@@ -70,11 +64,7 @@ class StationCard extends StatelessWidget {
                           ),
                           Text(
                             station.summary,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
-                              color: CustomTheme.grey,
-                            ),
+                            style: CustomTheme.small,
                           ),
                         ],
                       ),

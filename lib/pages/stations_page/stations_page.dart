@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ui_radio/blocs/stations_bloc/stations_bloc.dart';
+import 'package:flutter_ui_radio/config/consts.dart';
 import 'package:flutter_ui_radio/config/custom_theme.dart';
-import 'package:flutter_ui_radio/models/station_model.dart';
 import 'package:flutter_ui_radio/networking/repository/station_repository.dart';
+import 'package:flutter_ui_radio/pages/_widgets/main_size_box.dart';
 import 'package:flutter_ui_radio/pages/_widgets/primary_button.dart';
 import 'package:flutter_ui_radio/pages/station_page/station_page.dart';
+import 'package:flutter_ui_radio/pages/stations_page/_widgets/appbar_loader.dart';
 import 'package:flutter_ui_radio/pages/stations_page/_widgets/perspective_list_view.dart';
 import 'package:flutter_ui_radio/pages/stations_page/_widgets/station_card/station_card.dart';
 
@@ -21,7 +23,7 @@ class StationsPage extends StatelessWidget {
         )..add(const FirstStationsEvent()),
         child: Scaffold(
           appBar: AppBar(
-            actions: const [],
+            actions: const [AppBarLoader()],
           ),
           extendBodyBehindAppBar: true,
           body: const _StationsView(),
@@ -37,48 +39,54 @@ class _StationsView extends StatefulWidget {
 }
 
 class __StationsViewState extends State<_StationsView> {
-  List<Station> _stations = [];
-
   @override
   Widget build(BuildContext context) =>
-      BlocConsumer<StationsBloc, StationsState>(
-        listener: (context, state) {
-          if (state is SuccessStationsState) {
-            (state.page == 0)
-                ? _stations = state.stations
-                : _stations.addAll(state.stations);
-          }
-        },
+      BlocBuilder<StationsBloc, StationsState>(
         builder: (_, state) {
-          if (state is LoadingStationsState) {
+          if (state.isLoading && state.stations.isEmpty) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is SuccessStationsState) {
-            if (_stations.isEmpty) {
-              return const Center(child: Text('Empty...'));
-            }
+          } else if (state.stations.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(CustomTheme.mainSpacing),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Sorry, list is empty...'),
+                  const MainSizeBox(),
+                  PrimaryButton(
+                    title: 'Refresh',
+                    onPressed: () => context.read<StationsBloc>().add(
+                          const FirstStationsEvent(),
+                        ),
+                  ),
+                ],
+              ),
+            );
+          } else if (state.stations.isNotEmpty) {
             return RefreshIndicator(
               color: CustomTheme.black,
               child: PerspectiveListView(
                 itemExtent: MediaQuery.of(context).size.width,
-                visualizedCount: 8,
-                initialIndex: 7,
+                visualizedCount: StationList.visualizedCount,
+                initialIndex: StationList.initialIndex,
                 padding: EdgeInsets.fromLTRB(
-                  16.0,
+                  CustomTheme.mainSpacing,
                   AppBar().preferredSize.height,
-                  16.0,
-                  16.0,
+                  CustomTheme.mainSpacing,
+                  CustomTheme.mainSpacing,
                 ),
                 children: List.generate(
-                  _stations.length,
+                  state.stations.length,
                   (index) => StationCard(
-                    station: _stations[index],
+                    station: state.stations[index],
                     index: index,
-                    total: state.meta.totalCount,
+                    total: state.total,
                   ),
                 ),
                 onChangeItem: (int index) {
-                  log('onChangeItem: $index / ${_stations.length}');
-                  if (index == _stations.length - 10 && state.hasMorePages) {
+                  log('onChangeItem: $index / ${state.stations.length}');
+                  if (index == state.stations.length - 5 &&
+                      state.hasMorePages) {
                     context.read<StationsBloc>().add(const NextStationsEvent());
                   }
                 },
@@ -88,25 +96,24 @@ class __StationsViewState extends State<_StationsView> {
                     context,
                     MaterialPageRoute<void>(
                       builder: (context) => StationPage(
-                        station: _stations[index],
+                        station: state.stations[index],
                       ),
                     ),
                   );
                 },
               ),
               onRefresh: () async {
-                _stations = [];
                 context.read<StationsBloc>().add(const FirstStationsEvent());
               },
             );
-          } else if (state is ErrorStationsState) {
+          } else if (state.error != null) {
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(CustomTheme.mainSpacing),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.message),
-                  const SizedBox(height: 16.0),
+                  Text(state.error!),
+                  const MainSizeBox(),
                   PrimaryButton(
                     title: 'Refresh',
                     onPressed: () => context.read<StationsBloc>().add(
@@ -119,7 +126,7 @@ class __StationsViewState extends State<_StationsView> {
           }
 
           return const Center(
-            child: Text('Empy'),
+            child: Text('Ooops, something went wrong'),
           );
         },
       );

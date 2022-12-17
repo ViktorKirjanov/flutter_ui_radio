@@ -2,23 +2,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_ui_radio/blocs/stations_bloc/stations_bloc.dart';
 import 'package:flutter_ui_radio/models/links_model.dart';
 import 'package:flutter_ui_radio/models/station_model.dart';
-import 'package:flutter_ui_radio/models/stations_response_model.dart';
 
 void main() {
   group('SearchState', () {
-    test('should supports InitialSearchState value comparison', () {
-      expect(InitialStationsState(), InitialStationsState());
+    test('should supports pure state value comparison', () {
+      expect(StationsState.pure(), StationsState.pure());
     });
 
-    test('should supports LoadingSearchState value comparison', () {
-      expect(LoadingStationsState(), LoadingStationsState());
-    });
-
-    test('should supports SuccessSearchState value comparison', () {
+    test('should supports state value comparison', () {
       expect(
-        const SuccessStationsState(
-          1,
-          [
+        const StationsState(
+          page: 1,
+          stations: [
             Station(
               id: 'ps.106614797',
               href: 'https://api.napster.com/v2.2/stations/ps.106614797',
@@ -39,15 +34,14 @@ void main() {
               ),
             ),
           ],
-          Meta(
-            totalCount: 1,
-            returnedCount: 1,
-          ),
-          false,
+          total: 1,
+          error: null,
+          hasMorePages: false,
+          isLoading: false,
         ),
-        const SuccessStationsState(
-          1,
-          [
+        const StationsState(
+          page: 1,
+          stations: [
             Station(
               id: 'ps.106614797',
               href: 'https://api.napster.com/v2.2/stations/ps.106614797',
@@ -68,19 +62,11 @@ void main() {
               ),
             ),
           ],
-          Meta(
-            totalCount: 1,
-            returnedCount: 1,
-          ),
-          false,
+          total: 1,
+          error: null,
+          hasMorePages: false,
+          isLoading: false,
         ),
-      );
-    });
-
-    test('should supports ErrorSearchState value comparison', () {
-      expect(
-        const ErrorStationsState(message: 'error'),
-        const ErrorStationsState(message: 'error'),
       );
     });
   });

@@ -40,10 +40,7 @@ class PrimaryButton extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-              ),
+              style: CustomTheme.header2,
             ),
           ),
         ),

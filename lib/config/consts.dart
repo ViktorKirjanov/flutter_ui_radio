@@ -5,7 +5,9 @@ class Api {
   static const stationsPath = 'v2.2/stations';
 }
 
-class Pagination {
+class StationList {
+  static const visualizedCount = 8;
+  static const initialIndex = 8;
   static const limit = 25;
   static const timeout = Duration(milliseconds: 500);
 }
