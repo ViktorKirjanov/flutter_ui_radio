@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_radio/config/custom_theme.dart';
 
 class PlayingNow extends StatelessWidget {
   const PlayingNow({super.key});
 
   @override
-  Widget build(BuildContext context) => const Text(
+  Widget build(BuildContext context) => Text(
         'Disturbed - Unstoppable',
-        style: TextStyle(
-          fontSize: 16.0,
-          fontWeight: FontWeight.w500,
-        ),
+        style: CustomTheme.header2,
       );
 }

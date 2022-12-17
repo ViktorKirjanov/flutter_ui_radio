@@ -4,12 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_ui_radio/blocs/stations_bloc/stations_bloc.dart';
 import 'package:flutter_ui_radio/core/exceptions/exceptions.dart';
 import 'package:flutter_ui_radio/core/exceptions/network_exceptions.dart';
-import 'package:flutter_ui_radio/models/links_model.dart';
-// import 'package:flutter_ui_radio/models/meta_model.dart';
-import 'package:flutter_ui_radio/models/station_model.dart';
-import 'package:flutter_ui_radio/models/stations_response_model.dart';
 import 'package:flutter_ui_radio/networking/repository/station_repository.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../constants.dart';
 
 class MockStationRepository extends Mock implements StationRepository {}
 
@@ -28,37 +26,16 @@ void main() {
   });
 
   test('initial state should be InitialStationsState', () {
-    expect(buildBloc().state, equals(InitialStationsState()));
+    expect(buildBloc().state, equals(StationsState.pure()));
   });
 
-  const stations = [
-    Station(
-      id: 'ps.106614797',
-      href: 'https://api.napster.com/v2.2/stations/ps.106614797',
-      name: 'EDM Central',
-      description:
-          'Electro-house, trance, dubstep and more\nThe biggest tunes from the biggest festivals\nTracks for rocking the big tent\nClub peaktime comes to your living room\nEDM nonstop',
-      summary: 'The hottest in EDM and crossover dance music.',
-      artists: 'Avicii, Swedish House Mafia, Deadmau5',
-      links: Links(
-        mediumImage: Link(
-          href:
-              'http://static.rhap.com/img/150x100/7/8/2/6/4126287_150x100.jpg',
-        ),
-        largeImage: Link(
-          href:
-              'http://static.rhap.com/img/356x237/7/8/2/6/4126287_356x237.jpg',
-        ),
-      ),
-    )
-  ];
-
-  const stationsResponse = StationsResponse(
+  const firstState = StationsState(
+    page: 1,
     stations: stations,
-    // meta: Meta(
-    //   totalCount: 1,
-    //   returnedCount: 1,
-    // ),
+    total: 2,
+    isLoading: false,
+    hasMorePages: true,
+    error: null,
   );
 
   void setUpMockGetStationsExeption() =>
@@ -78,8 +55,11 @@ void main() {
       build: buildBloc,
       act: (StationsBloc bloc) async => bloc.add(const FirstStationsEvent()),
       expect: () => [
-        LoadingStationsState(),
-        const ErrorStationsState(message: 'Request Cancelled'),
+        StationsState.pure().copyWith(isLoading: true),
+        StationsState.pure().copyWith(
+          isLoading: false,
+          error: 'Request Cancelled',
+        ),
       ],
       verify: (_) => verify(
         () => mockStationRepository.getStations(any(), any()),
@@ -92,8 +72,14 @@ void main() {
       build: buildBloc,
       act: (StationsBloc bloc) async => bloc.add(const FirstStationsEvent()),
       expect: () => [
-        LoadingStationsState(),
-        const SuccessStationsState(1, stations, false),
+        StationsState.pure().copyWith(isLoading: true),
+        StationsState.pure().copyWith(
+          page: 1,
+          isLoading: false,
+          stations: stations,
+          total: 2,
+          hasMorePages: true,
+        ),
       ],
       verify: (_) => verify(
         () => mockStationRepository.getStations(any(), any()),
@@ -106,10 +92,14 @@ void main() {
       'should emit [Error] when api thow an error',
       setUp: setUpMockGetStationsExeption,
       build: buildBloc,
-      seed: () => const SuccessStationsState(1, stations, false),
+      seed: () => firstState,
       act: (StationsBloc bloc) async => bloc.add(const NextStationsEvent()),
       expect: () => [
-        const ErrorStationsState(message: 'Request Cancelled'),
+        firstState.copyWith(isLoading: true),
+        firstState.copyWith(
+          isLoading: false,
+          error: 'Request Cancelled',
+        ),
       ],
       verify: (_) => verify(
         () => mockStationRepository.getStations(any(), any()),
@@ -120,9 +110,17 @@ void main() {
       'should emit [Success] when data is gotten successfully',
       setUp: setUpMockGetStationsSuccess,
       build: buildBloc,
-      seed: () => const SuccessStationsState(1, stations, true),
+      seed: () => firstState,
       act: (StationsBloc bloc) async => bloc.add(const NextStationsEvent()),
-      expect: () => [const SuccessStationsState(2, stations, false)],
+      expect: () => [
+        firstState.copyWith(isLoading: true),
+        firstState.copyWith(
+          page: 2,
+          isLoading: false,
+          stations: [...stations, ...stations],
+          hasMorePages: false,
+        ),
+      ],
       verify: (_) => verify(
         () => mockStationRepository.getStations(any(), any()),
       ).called(1),
@@ -132,10 +130,11 @@ void main() {
       'should emit [Error] when current state is not Success',
       setUp: setUpMockGetStationsSuccess,
       build: buildBloc,
-      seed: InitialStationsState.new,
+      seed: StationsState.pure,
       act: (StationsBloc bloc) async => bloc.add(const NextStationsEvent()),
-      expect: () =>
-          [const ErrorStationsState(message: 'Ooops, something went wrong')],
+      expect: () => [
+        StationsState.pure().copyWith(error: 'Ooops, something went wrong'),
+      ],
       verify: (_) => verifyNever(
         () => mockStationRepository.getStations(any(), any()),
       ),

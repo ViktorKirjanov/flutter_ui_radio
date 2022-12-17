@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ui_radio/blocs/cubit/on_off_cubit.dart';
+import 'package:flutter_ui_radio/config/custom_theme.dart';
 
 class ControlButtons extends StatelessWidget {
   const ControlButtons({super.key});
@@ -12,18 +13,15 @@ class ControlButtons extends StatelessWidget {
         children: [
           CupertinoButton(
             child: Column(
-              children: const [
+              children: [
                 Text(
                   'HD',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: CustomTheme.header1,
                 ),
-                SizedBox(height: 2.0),
+                const SizedBox(height: 2.0),
                 Text(
                   'Quality',
-                  style: TextStyle(fontSize: 11.0),
+                  style: CustomTheme.small,
                 ),
               ],
             ),
@@ -32,9 +30,9 @@ class ControlButtons extends StatelessWidget {
           Container(
             width: 75,
             height: 75,
-            decoration: ShapeDecoration(
-              shape: const StadiumBorder(),
-              color: Colors.purple.shade300,
+            decoration: const ShapeDecoration(
+              shape: StadiumBorder(),
+              color: CustomTheme.mainColor,
             ),
             child: BlocBuilder<OnOffCubit, bool>(
               builder: (_, state) => MaterialButton(
@@ -51,15 +49,15 @@ class ControlButtons extends StatelessWidget {
           ),
           CupertinoButton(
             child: Column(
-              children: const [
-                Icon(
+              children: [
+                const Icon(
                   Icons.playlist_play_rounded,
                   size: 30.0,
                   color: Colors.white70,
                 ),
                 Text(
                   'Playlist',
-                  style: TextStyle(fontSize: 11.0),
+                  style: CustomTheme.small,
                 ),
               ],
             ),

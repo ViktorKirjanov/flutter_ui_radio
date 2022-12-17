@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       RepositoryProvider<StationRepository>.value(
         value: stationRepository,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           themeMode: ThemeMode.dark,
           theme: CustomTheme.darkTheme,
