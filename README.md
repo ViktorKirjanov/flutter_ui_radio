@@ -3,6 +3,10 @@
 
 # Result
 
+ | List | Station |
+ |------|---------|
+ |<img src="screenshots/radio_1.gif" width="400">|<img src="screenshots/radio_2.gif" width="400"> |
+
  | With station image| Without station image |
  |-------------------|-----------------------|
  |<img src="screenshots/station_2.png" width="400">|<img src="screenshots/station_3.png" width="400"> |
